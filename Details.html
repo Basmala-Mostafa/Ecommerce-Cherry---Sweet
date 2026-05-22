@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - Cherry Sweets</title>
+  <link rel="icon" type="image/png" href="./images/Logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2 family=Lobster&family=Lexend:wght@400;600;700&family=Bad+Script&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --pink: #f28d9b;
+      --pink-light: #fbd0d5;
+      --pink-hover: #d2828c;
+      --gold: #e3b05b;
+      --cream: #f7edde;
+      --dark: #3a2020;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      color: var(--dark);
+      background-color: #faf6f0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+/* ── NAVBAR ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(242,141,155,0.18);
+      padding: 0 24px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid var(--pink);
+      box-shadow: 0 0 0 3px rgba(242,141,155,0.2);
+    }
+
+    .brand-name {
+      font-family: 'Lobster', sans-serif;
+      font-size: 26px;
+      color: var(--pink);
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 50px;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a:hover {
+      background: var(--pink-light);
+      color: var(--pink-hover);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 2.5px;
+      background: var(--pink);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(8.75px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8.75px) rotate(-45deg); }
+
+    /* Mobile Drawer */
+    .mobile-menu {
+      position: fixed;
+      top: 70px;
+      right: -100%;
+      width: min(300px, 85vw);
+      height: calc(100vh - 70px);
+      background: white;
+      box-shadow: -4px 0 30px rgba(0,0,0,0.12);
+      z-index: 99;
+      transition: right 0.35s ease;
+      padding: 24px 20px;
+    }
+
+    .mobile-menu.open { right: 0; }
+    .mobile-menu ul { list-style: none; }
+    .mobile-menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .overlay-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 98;
+    }
+    .overlay-bg.show { display: block; }
+
+/* ── DETAILS CONTAINER ── */
+    .details-container {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 50px auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .product-image-container {
+      flex: 1;
+    }
+
+    .product-image-container img {
+      width: 100%;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+
+    .product-info-container {
+      flex: 1;
+    }
+
+    .product-info-container h1 {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+
+    .product-price {
+      font-size: 26px;
+      color: var(--pink);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .product-description {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .quantity-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .quantity-section span {
+      font-weight: 600;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      overflow: hidden;
+    }
+
+    .quantity-controls button {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--dark);
+      transition: background 0.2s;
+    }
+
+    .quantity-controls button:hover {
+      background: var(--pink-light);
+    }
+
+    .quantity-controls input {
+      width: 50px;
+      text-align: center;
+      border: none;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      font-size: 16px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .buy-now-btn {
+      background: var(--pink);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 8px 20px rgba(242,141,155,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .buy-now-btn:hover {
+      background: var(--pink-hover);
+      transform: translateY(-2px);
+    }
+
+/* ── FOOTER ── */
+    .footer-section {
+      padding: 40px 20px;
+      background: white;
+      border-top: 1px solid #f0e0e4;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: space-between;
+    }
+
+    .footer-left, .footer-right { flex: 1 1 260px; }
+
+    .logo-text {
+      font-family: 'Lobster', sans-serif;
+      font-size: 42px;
+      color: var(--pink);
+    }
+
+    .footer-left p { color: #666; line-height: 1.6; }
+    .phone { font-size: 26px; font-weight: 700; }
+    .footer-right p { margin: 4px 0; color: #555; }
+    .social { margin-top: 14px; display: flex; gap: 12px; }
+    .social i { color: var(--pink); font-size: 20px; cursor: pointer; }
+
+/* Responsive */
+    @media (max-width: 768px) {
+      .details-container {
+        flex-direction: column;
+        text-align: center;
+        margin: 20px auto;
+      }
+      .quantity-section {
+        justify-content: center;
+      }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+</style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="./Home.html">
+      <img src="./images/Logo.png" alt="Cherry Sweets Logo">
+      <span class="brand-name">Cherry Sweets</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="./Home.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="./Checkout.html"><i class="fa-solid fa-cart-shopping"></i> Checkout</a></li>
+      <li><a href="about.html"><i class="fa-solid fa-user"></i> About Us</a></li>
+      <li><a href="Contact.html"><i class="fa-solid fa-comment"></i> Contact Us</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="overlay-bg" id="overlayBg"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="./Home.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="./Checkout.html"><i class="fa-solid fa-cart-shopping"></i> Checkout</a></li>
+      <li><a href="about.html"><i class="fa-solid fa-user"></i> About Us</a></li>
+      <li><a href="Contact.html"><i class="fa-solid fa-comment"></i> Contact Us</a></li>
+    </ul>
+  </div>
+
+  <!-- PRODUCT DETAILS CONTENT -->
+  <main class="details-container">
+    <div class="product-image-container">
+      <img id="detailImg" src="" alt="Product Image">
+    </div>
+    
+    <div class="product-info-container">
+      <h1 id="detailName">Product Name</h1>
+      <div class="product-price" id="detailPrice">0.00$</div>
+      <p class="product-description" id="detailDesc">Loading description...</p>
+      
+      <div class="quantity-section">
+        <span>Quantity:</span>
+        <div class="quantity-controls">
+          <button id="minusBtn">-</button>
+          <input type="number" id="qtyInput" value="1" min="1">
+          <button id="plusBtn">+</button>
+        </div>
+      </div>
+
+      <button class="buy-now-btn" id="buyNowBtn">
+        <i class="fa-solid fa-bag-shopping"></i> Buy Now
+      </button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div class="footer-section">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <h2 class="logo-text">Cherry Sweets</h2>
+        <h4>Something Sweet for Everyone.</h4>
+        <p>Freshly baked cakes made with love and premium ingredients. Every bite is crafted to make your moments sweeter.</p>
+      </div>
+
+      <div class="footer-right">
+        <div class="phone">987 654 3210+</div>
+        <p>order@cherrysweets.com</p>
+        <p>6 October, Egypt, EG 10160</p>
+        <div class="social">
+          <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Mobile Menu ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const overlayBg  = document.getElementById('overlayBg');
+
+    function toggleMenu(open) {
+      hamburger.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      overlayBg.classList.toggle('show', open);
+    }
+    hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('open')));
+    overlayBg.addEventListener('click', () => toggleMenu(false));
+
+    // ── Render Product Details from LocalStorage ──
+    const productData = JSON.parse(localStorage.getItem('selectedProduct'));
+
+    if (productData) {
+      document.getElementById('detailName').innerText = productData.name;
+      document.getElementById('detailPrice').innerText = productData.price;
+      document.getElementById('detailDesc').innerText = productData.description;
+      // إذا كانت الصورة مفقودة نضع صورة افتراضية كـ fallback
+      document.getElementById('detailImg').src = productData.img || './images/Logo.png';
+    }
+
+    // ── Quantity Logic ──
+    const qtyInput = document.getElementById('qtyInput');
+    document.getElementById('plusBtn').addEventListener('click', () => qtyInput.value = parseInt(qtyInput.value) + 1);
+    document.getElementById('minusBtn').addEventListener('click', () => {
+      if(parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+    });
+
+    // ── Buy Now & Save Order Info ──
+    document.getElementById('buyNowBtn').addEventListener('click', function() {
+      if (!productData) return;
+
+      // تنظيف السعر من علامة الـ $ لعمل الحسابات الرياضية بسهولة
+      const cleanPrice = parseFloat(productData.price.replace('$', ''));
+      const quantity = parseInt(qtyInput.value);
+
+      const orderInfo = {
+        name: productData.name,
+        price: cleanPrice,
+        qty: quantity,
+        shipping: 30.00 // قيمة افتراضية للشحن بالـ EGP أو الـ $ حسب الرغبة
+      };
+
+      // حفظ بيانات الفاتورة الحالية ليقرأها الـ Checkout
+      localStorage.setItem('currentOrder', JSON.stringify(orderInfo));
+      
+      // التوجيه التلقائي لصفحة الـ Checkout
+      window.location.href = 'Checkout.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cherry Sweets</title>
+  <link rel="icon" type="image/png" href="./images/Logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Lexend:wght@400;700&family=Bad+Script&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --pink: #f28d9b;
+      --pink-light: #fbd0d5;
+      --pink-hover: #d2828c;
+      --gold: #e3b05b;
+      --cream: #f7edde;
+      --dark: #3a2020;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      color: var(--dark);
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(242,141,155,0.18);
+      padding: 0 24px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid var(--pink);
+      box-shadow: 0 0 0 3px rgba(242,141,155,0.2);
+    }
+
+    .brand-name {
+      font-family: 'Lobster', sans-serif;
+      font-size: 26px;
+      color: var(--pink);
+      line-height: 1;
+    }
+
+    /* Desktop Nav Links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 50px;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--pink-light);
+      color: var(--pink-hover);
+    }
+
+    .nav-links a i {
+      font-size: 13px;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 2.5px;
+      background: var(--pink);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(8.75px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8.75px) rotate(-45deg); }
+
+    /* Mobile Drawer */
+    .mobile-menu {
+      position: fixed;
+      top: 70px;
+      right: -100%;
+      width: min(300px, 85vw);
+      height: calc(100vh - 70px);
+      background: white;
+      box-shadow: -4px 0 30px rgba(0,0,0,0.12);
+      z-index: 99;
+      transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+      padding: 24px 20px;
+    }
+
+    .mobile-menu.open { right: 0; }
+
+    .mobile-menu ul { list-style: none; }
+
+    .mobile-menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 12px;
+      transition: all 0.2s;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .mobile-menu a:hover {
+      background: var(--pink-light);
+      color: var(--pink-hover);
+    }
+
+    .mobile-menu a i { color: var(--pink); width: 18px; }
+
+    .overlay-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 98;
+    }
+    .overlay-bg.show { display: block; }
+
+    /* ── HERO ── */
+    .section1 {
+      background-image: url(./images/Hero.jpeg);
+      background-size: cover;
+      background-position: center;
+      min-height: 55vh;
+      position: relative;
+    }
+
+    @media(min-width:992px) { .section1 { min-height: 90vh; } }
+
+    .leyer1 {
+      width: 100%;
+      min-height: inherit;
+      background: rgba(74,43,47,0.55);
+      display: flex;
+      align-items: center;
+    }
+
+    .Home {
+      padding: 40px 30px;
+    }
+
+    .Home .h3 {
+      color: white;
+      font-family: 'Lobster', sans-serif;
+      font-size: clamp(32px, 6vw, 90px);
+      font-weight: 400;
+    }
+
+    .h2.typing {
+      color: var(--pink);
+      font-family: 'Lobster', sans-serif;
+      font-size: clamp(48px, 9vw, 110px);
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid var(--pink);
+      width: 0;
+      display: inline-block;
+      animation: typing 3s steps(13) infinite alternate, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing { from { width: 0; } to { width: 15ch; } }
+    @keyframes blink { 50% { border-color: transparent; } }
+
+    .Home .h4 {
+      color: white;
+      font-family: 'Lexend', sans-serif;
+      font-size: clamp(16px, 3vw, 38px);
+      font-weight: 700;
+      margin-top: 8px;
+      max-width: 60%;
+    }
+
+    .Home .btn-order {
+      margin-top: 18px;
+      padding: clamp(10px,2vw,15px) clamp(24px,4vw,50px);
+      border-radius: 50px;
+      background: var(--pink);
+      border: none;
+      color: white;
+      font-size: clamp(14px,1.8vw,18px);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .Home .btn-order:hover {
+      background: var(--pink-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ── SPECIAL OFFER ── */
+    .specials { margin-top: 40px; padding: 0 16px; }
+
+    .offer-link { text-decoration: none; }
+
+    .offer1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #b59a73, #fcf6ee);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      transition: box-shadow 0.3s;
+    }
+
+    .offer1:hover { box-shadow: 0 0 28px #e3b05b; }
+
+    .offer1 .content, .offer1 .img1 { width: 50%; }
+
+    .offer1 .img1 img { width: 100%; height: auto; border-radius: 15px; }
+
+    .offer1 .content { color: black; padding-right: 15px; }
+
+    .offer1 .content h5 {
+      font-size: clamp(13px, 2vw, 22px);
+      letter-spacing: 1px;
+      padding-top: clamp(10px, 3vw, 40px);
+      color: var(--gold);
+    }
+
+    .offer1 .content h2 {
+      font-size: clamp(18px, 3.5vw, 46px);
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .offer1 .content p { font-size: clamp(13px, 2vw, 30px); }
+
+    /* ── SIGNATURE CAKES ── */
+    .cat { margin-top: 50px; padding: 0 16px; }
+
+    .cat .intro { text-align: center; margin-bottom: 4px; }
+
+    .cat .section-title {
+      font-family: 'Bad Script', cursive;
+      font-size: clamp(22px, 4vw, 36px);
+      color: var(--pink);
+      text-decoration: underline;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media(min-width:768px) {
+      .cards { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .car {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+    }
+
+    .car img {
+      height: clamp(160px, 22vw, 280px);
+      width: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.52);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .car:hover img { transform: scale(1.12); }
+    .car:hover .overlay { opacity: 1; }
+
+    .overlay .card-title {
+      font-size: clamp(12px, 1.5vw, 16px);
+      margin-bottom: 10px;
+    }
+
+    .overlay .btn-detail {
+      padding: 8px 18px;
+      background: var(--pink);
+      border: none;
+      color: white;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .overlay .btn-detail:hover { background: rgba(242,141,155,0.75); }
+
+    /* ── BEST SELLERS ── */
+    .best {
+      background: var(--cream);
+      margin-top: 40px;
+      padding: 30px 16px 30px;
+    }
+
+    .best .section-heading {
+      font-family: 'Lobster', sans-serif;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .b {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-evenly;
+    }
+
+    .bcard {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: clamp(220px, 30%, 320px);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .bcard:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.14);
+    }
+
+    .bcard img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .bcard-body {
+      padding: 14px;
+      text-align: center;
+    }
+
+    .bcard-body h5 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .bcard-body p {
+      color: var(--pink);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* ── REVIEWS ── */
+    .rev {
+      background: var(--cream);
+      padding: 30px 16px 30px;
+    }
+
+    .rev .section-heading {
+      font-family: 'Lobster', sans-serif;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .revs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: space-evenly;
+    }
+
+    .rev-card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      width: clamp(200px, 30%, 320px);
+      font-size: 13px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    }
+
+    .rev-card .stars i { color: var(--gold); font-size: 12px; }
+
+    .rev-card p { margin: 8px 0 6px; line-height: 1.5; }
+
+    .rev-card .reviewer { color: var(--pink); font-weight: 700; font-size: 12px; }
+
+    /* ── FOOTER ── */
+    .footer-section {
+      padding: 40px 20px;
+      background: white;
+      border-top: 1px solid #f0e0e4;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: space-between;
+    }
+
+    .footer-left, .footer-right { flex: 1 1 260px; }
+
+    .logo-text {
+      font-family: 'Lobster', sans-serif;
+      font-size: 42px;
+      color: var(--pink);
+    }
+
+    .footer-left h4 { margin: 12px 0 8px; font-weight: 600; }
+    .footer-left p { color: #666; line-height: 1.6; }
+
+    .phone { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+    .footer-right p { margin: 4px 0; color: #555; }
+
+    .social { margin-top: 14px; display: flex; gap: 12px; }
+
+    .social i {
+      color: var(--pink);
+      font-size: 20px;
+      cursor: pointer;
+      transition: color 0.25s;
+    }
+
+    .social i:hover { color: var(--dark); }
+
+    /* ── SCROLL TOP ── */
+    .scroll-top {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #f4bbc2, var(--pink));
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 200;
+    }
+
+    .scroll-top:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.35); transform: translateY(-3px); }
+
+    @media(max-width:991px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body id="top">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="./Home.html">
+      <img src="./images/Logo.png" alt="Cherry Sweets Logo">
+      <span class="brand-name">Cherry Sweets</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="./Home.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="./Checkout.html"><i class="fa-solid fa-cart-shopping"></i> Checkout</a></li>
+      <li><a href="about.html"><i class="fa-solid fa-user"></i> About Us</a></li>
+      <li><a href="Contact.html"><i class="fa-solid fa-comment"></i> Contact Us</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="overlay-bg" id="overlayBg"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="./Home.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="./Checkout.html"><i class="fa-solid fa-cart-shopping"></i> Checkout</a></li>
+      <li><a href="about.html"><i class="fa-solid fa-user"></i> About Us</a></li>
+      <li><a href="Contact.html"><i class="fa-solid fa-comment"></i> Contact Us</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <div class="section1">
+    <div class="leyer1">
+      <div class="Home" id="Home">
+        <div class="h3">Welcome to</div>
+        <div class="h2 typing">Cherry Sweets</div>
+        <div class="h4">Artisan Cakes Made Fresh Daily</div>
+        <a href="#cards" class="btn-order">Order Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPECIAL OFFER -->
+  <div class="specials">
+    <a href="Ramadan-offers.html" class="offer-link">
+      <div class="offer1">
+        <div class="content">
+          <h5 class="fw-bold"><i class="fa-solid fa-moon"></i> RAMADAN SPECIAL</h5>
+          <h2>Up to 30% Off</h2>
+          <p>Limited time deals <i class="fa-solid fa-arrow-right-long"></i></p>
+        </div>
+        <div class="img1">
+          <img src="./images/ramadan.jpeg" alt="Ramadan Special">
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- SIGNATURE CAKES - 4 products -->
+  <div class="cat" id="cards">
+    <p class="intro">Indulge yourself with our</p>
+    <div class="section-title">SIGNATURE CAKES</div>
+
+    <div class="cards">
+
+      <div class="car">
+        <img src="./images/Chocolate Cake.jpg" alt="Chocolate Cake  ">
+        <div class="overlay">
+          <h5 class="card-title fw-bold">Chocolate Cake</h5>
+<a href="Details.html" class="btn-detail showDetails"
+   data-name="Chocolate cake"
+   data-img="./images/Chocolate Cake.jpg"
+   data-price="15$"
+   data-description="Rich chocolate cake with creamy layers.">
+   Show Details
+</a>
+        </div>
+      </div>
+
+      <div class="car">
+        <img src="./images/Strawberry Cheesecake.jpg" alt="Strawberry Cheesecake">
+        <div class="overlay">
+          <h5 class="card-title fw-bold">Strawberry Cheesecake</h5>
+          <a href="Details.html" class="btn-detail showDetails"
+             data-name="Strawberry Cheesecake"
+               data-img="./images/Strawberry Cheesecake.jpg"
+             data-price="18$"
+             data-description="Fresh strawberry with soft cheesecake base.">
+            Show Details
+          </a>
+        </div>
+      </div>
+
+      <div class="car">
+        <img src="./images/Donuts.jpg" alt="Donuts Box">
+        <div class="overlay">
+          <h5 class="card-title fw-bold">Donuts Box</h5>
+          <a href="Details.html" class="btn-detail showDetails"
+             data-name="Donuts Box"
+               data-img="./images/Donuts.jpg"
+             data-price="10$"
+             data-description="Mixed flavored donuts box.">
+            Show Details
+          </a>
+        </div>
+      </div>
+
+      <div class="car">
+        <img src="./images/Cupcake.jpg " alt="Cupcake Set">
+        <div class="overlay">
+          <h5 class="card-title fw-bold">Cupcake Set</h5>
+          <a href="Details.html" class="btn-detail showDetails"
+             data-name="Cupcake Set"
+               data-img="./images/Cupcake.jpg"
+             data-price="45"
+             data-description="Colorful Cupcake with different flavors.">
+            Show Details
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BEST SELLERS -->
+  <div class="best">
+    <div class="section-heading"><i class="fa-solid fa-ranking-star"></i> Best Sellers</div>
+    <div class="b">
+
+      <div class="bcard">
+        <img src="./images/Strawberry Cheesecake.jpg " alt="strawberry cheesecake">
+        <div class="bcard-body">
+          <h5>Strawbe Cheesecake</h5>
+          <p>18.99$</p>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <img src="./images/ramadan.jpeg" alt="Ramadan Special Platter">
+        <div class="bcard-body">
+          <h5>Ramadan Special Platter</h5>
+          <p>20.99$</p>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <img src="./images/Chocolate Cake.jpg " alt="Chocolate Cake ">
+        <div class="bcard-body">
+          <h5>Chocolate Cake</h5>
+          <p>15.99$</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="rev">
+    <div class="section-heading">Customer Love <i class="fa-solid fa-heart"></i></div>
+    <div class="revs">
+
+      <div class="rev-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"The chocolate cake was absolutely divine. Best I've ever tasted"</p>
+        <div class="reviewer">Sarah M.</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"Amazing Ramadan Special Platter. Loved every piece!"</p>
+        <div class="reviewer">Ahmed M.</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p>"The strawberry cheesecake was unbelievably fresh and creamy!"</p>
+        <div class="reviewer">Lina K.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-section">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <h2 class="logo-text">Cherry Sweets</h2>
+        <h4>Something Sweet for Everyone.</h4>
+        <p>Freshly baked cakes made with love and premium ingredients. Every bite is crafted to make your moments sweeter.</p>
+      </div>
+
+      <div class="footer-right">
+        <div class="phone">987 654 3210+</div>
+        <p>order@cherrysweets.com</p>
+        <p>6 October, Egypt, EG 10160</p>
+        <div class="social">
+          <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCROLL TOP -->
+  <a href="#top" class="scroll-top"><i class="fa-solid fa-chevron-up"></i></a>
+
+  <script>
+    // ── Mobile Menu ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const overlayBg  = document.getElementById('overlayBg');
+
+    function toggleMenu(open) {
+      hamburger.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      overlayBg.classList.toggle('show', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('open')));
+    overlayBg.addEventListener('click', () => toggleMenu(false));
+
+    // Close on link click
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+
+    // ── Product Details (localStorage) ──
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.showDetails').forEach(btn => {
+        btn.addEventListener('click', function () {
+          localStorage.setItem('selectedProduct', JSON.stringify({
+            name:        this.dataset.name,
+            img:         this.dataset.img,
+            price:       this.dataset.price,
+            description: this.dataset.description
+          }));
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
